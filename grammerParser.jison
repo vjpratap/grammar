@@ -2,15 +2,6 @@
 
 /* lexical grammar */
 
-%{
-		var formatWithObject = function(noun, verb, object){
-			return {"noun":noun, "verb":verb, "object":object};
-		};
-		var  formatWithoutObject = function(noun, verb){
-			return {"noun":noun, "verb":verb};
-		}
-%}
-
 %lex
 
 
@@ -20,7 +11,7 @@
 ("hates"|"likes")   													return 'VERB';
 ("tea"|"coffee"|"butter"|"cheese"|"biscuits")   						return 'OBJECT';
 "."																		return 'DOT';
-<<EOF>>             return 'EOF';
+<<EOF>>             													return 'EOF';
 
 /lex
 
@@ -39,14 +30,9 @@ sentences
 
 sentence
 	:NOUN VERB OBJECT DOT {
-		$$ = formatWithObject($1,$2,$3)
+		$$ = {"noun":$1, "verb":$2, "object":$3};
 	}
 	|NOUN VERB NOUN DOT {
-		$$ = formatWithObject($1,$2,$3)
-	}
-	|NOUN VERB OBJECT {
-		$$ = formatWithObject($1,$2,$3)
+		$$ = {"noun":$1, "verb":$2, "object":$3};
 	}
 	;
-
-
